@@ -7,8 +7,33 @@
     name:
     - plasma-meta
     - kde-applications-meta
+    - ttf-dejavu
+    - noto-fonts
+    - noto-fonts-cjk
+    - noto-fonts-emoji
 
 - name: enable display manager
+  become: true
   systemd:
     enabled: yes
     name: sddm
+
+- name: enable sub-pixel
+  become: true
+  file:
+    src: /etc/fonts/conf.avail/10-sub-pixel-rgb.conf
+    dest: /etc/fonts/conf.d/10-sub-pixel-rgb.conf
+    state: link
+
+- name: enable slight hinting
+  become: true
+  file:
+    src: /etc/fonts/conf.avail/10-hinting-slight.conf
+    dest: /etc/fonts/conf.d/10-hinting-slight.conf
+    state: link
+
+- name: disable bitmap font scaling
+  become: true
+  file:
+    path: /etc/fonts/conf.d/10-scale-bitmap-fonts.conf
+    state: absent
